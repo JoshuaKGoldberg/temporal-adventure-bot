@@ -1,0 +1,46 @@
+{
+  "dependencies": {
+    "@slack/bolt": "^3.8.1",
+    "dotenv": "^10.0.0",
+    "temporalio": "0.16.x"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-deprecation": "^1.2.1",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.2"
+  },
+  "keywords": [
+    "temporal",
+    "temporalio",
+    "bot",
+    "slack",
+    "choose your own adventure",
+    "game"
+  ],
+  "license": "MIT",
+  "name": "temporal-hello-world",
+  "nodemonConfig": {
+    "execMap": {
+      "ts": "ts-node"
+    },
+    "ext": "ts",
+    "watch": [
+      "src"
+    ]
+  },
+  "scripts": {
+    "build.watch": "tsc --build --watch",
+    "build": "tsc --build",
+    "lint": "eslint .",
+    "start.watch": "nodemon src/worker.ts",
+    "start": "ts-node src/worker.ts",
+    "workflow": "ts-node src/execute-workflow.ts"
+  },
+  "version": "0.1.0"
+}
