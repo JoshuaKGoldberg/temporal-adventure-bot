@@ -22,7 +22,7 @@ export async function check({
     timestamp: messageId,
   });
   if (!response.message?.reactions) {
-    return { error: response.error ?? "Could not retrieve reactions." };
+    throw new Error(response.error ?? "Could not retrieve reactions.");
   }
 
   console.log("Received reactions", response.message.reactions);
