@@ -8,13 +8,17 @@ const emojiToIndex = new Map(
 
 // todo; maybe return the emojis also, for a reaction?
 export function formatEntryData(data: GameEntry) {
+  if (!data.options) {
+    return data.description;
+  }
+
   return [
     data.description,
     "",
     "Options:",
-    ...(data.options?.map(
+    ...data.options.map(
       (option, i) => `- :${indexToEmoji[i]}:: ${option.description}`
-    ) ?? ["Fin"]),
+    ),
   ].join("\n");
 }
 

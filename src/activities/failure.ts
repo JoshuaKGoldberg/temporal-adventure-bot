@@ -1,3 +1,4 @@
+import { logger } from "../logger";
 import { slack } from "../slack";
 
 export interface FailureOptions {
@@ -6,15 +7,10 @@ export interface FailureOptions {
 }
 
 export async function failure({ channel, error }: FailureOptions) {
-  console.log(`Failed: ${error}.`);
+  logger.error(`Failed: ${error}.`);
 
-  try {
-    await slack.client.chat.postMessage({
-      channel,
-      text: `Well, darn. I can't continue the adventure 😢. ${error}`,
-    });
-  } catch (error) {
-    console.warn("Failure oh no", { error });
-    throw error;
-  }
+  await slack.client.chat.postMessage({
+    channel,
+    text: `Well, darn. I can't continue the adventure 😢. ${error}`,
+  });
 }

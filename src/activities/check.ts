@@ -1,4 +1,5 @@
 import { game } from "../game";
+import { logger } from "../logger";
 import { slack } from "../slack";
 import { getBestReaction } from "../text";
 import { Result } from "../types";
@@ -13,24 +14,28 @@ export async function check({
   channel,
   entry,
   messageId,
-}: CheckOptions): Promise<Result<string | undefined>> {
+}: CheckOptions): Promise<Result<string> | undefined> {
+  console.log("Checking", messageId);
+
   // 1. Search for the message in channel history
-  const history = await slack.client.conversations.history({
+  const response = await slack.client.reactions.get({
     channel,
-    latest: messageId,
+    timestamp: messageId,
   });
-  if (!history.messages?.length) {
-    return { error: "Could not find message in history. Was it deleted?" };
+  if (!response.message) {
+    return { error: response.error ?? "Could not retrieve reactions." };
   }
 
   // 2. Count the reactions to see what people have voted on
   const reactions =
-    history.messages[0]?.reactions?.map((reaction) => reaction.name!) ?? [];
+    response.message.reactions?.map((reaction) => reaction.name!) ?? [];
   const bestIndex = getBestReaction(reactions);
+
+  console.log("Found reactions with bestIndex ", { reactions, bestIndex });
 
   // 3. If nothing was voted on, give nothing back
   if (bestIndex === undefined) {
-    return { data: undefined };
+    return undefined;
   }
 
   // 4. Give back the corresponding next step for the best emoji index

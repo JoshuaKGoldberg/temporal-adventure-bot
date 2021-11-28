@@ -15,8 +15,12 @@ A sample [temporal.io](https://temporal.io/) application that posts a daily Slac
 
 1. Create a new app using either flow on [Slack API > Apps > New App](https://api.slack.com/apps?new_app)
    - Give it at least the following bot permissions:
-     - `chat:write`
+     - `channels:read`
      - `chat:write.public`
+     - `chat:write`
+     - `pins:write`
+     - `reactions:read`
+     - `reactions:write`
 1. Install it on your Slack workspace
 1. Grab its Bot OAuth token from Settings > OAuth & Permissions (`https://api.slack.com/apps/*/oauth`)
 

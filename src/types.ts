@@ -19,12 +19,12 @@ export interface GameOption {
   next: string;
 }
 
-export type Result<Data> = ResultFailure | ResultSuccess<Data>;
+export type Result<Data = void> = ResultFailure | ResultSuccess<Data>;
 
 export interface ResultFailure {
   error: string;
 }
 
-export interface ResultSuccess<Data> {
-  data: Data;
-}
+export type ResultSuccess<Data> = Data extends void
+  ? Record<string, never>
+  : { data: Data };

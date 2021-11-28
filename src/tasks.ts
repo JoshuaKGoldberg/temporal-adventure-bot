@@ -1,26 +1,21 @@
 import { sleep } from "@temporalio/workflow";
 
 import { logger } from "./logger";
+import { Result } from "./types";
 
-const period = "ms"; // "days"
-
-export async function checkExponentially<Result>(
-  action: () => Promise<Result | undefined>
+export async function checkRepeatedly<Data>(
+  period: string,
+  action: () => Promise<Result<Data> | undefined>
 ) {
-  let amount = 1;
-
   while (true) {
-    const wait = `${amount} ${period}`;
-    logger.info(`Waiting ${wait}...`);
-    await sleep(wait);
+    logger.info(`Waiting ${period}...`);
+    await sleep(period);
     logger.info("Trying again.");
 
     const result = await action();
     if (result !== undefined) {
-      logger.info(`Got a result: ${result}`);
+      logger.info("Got a result", result);
       return result;
     }
-
-    amount *= 2;
   }
 }

@@ -1,4 +1,3 @@
-import { logger } from "../logger";
 import { slack } from "../slack";
 import { Result } from "../types";
 
@@ -11,23 +10,22 @@ export async function post({
   channel,
   text,
 }: PostOptions): Promise<Result<string>> {
-  logger.info(`Posting: ${JSON.stringify({ channel, text })}`);
-  try {
-    const response = await slack.client.chat.postMessage({
-      channel,
-      text: `@here ${text}`,
-    });
-    logger.info("Announce a " + JSON.stringify({ response }));
+  console.log("Posting", { channel, text });
+  const response = await slack.client.chat.postMessage({
+    channel,
+    text,
+  });
 
-    // Slack keeps timestamps as equivalents to unique IDs for messages.
-    // https://api.slack.com/messaging/retrieving#individual_messages
-    const messageId = response.message?.ts;
+  // Slack keeps timestamps as equivalents to unique IDs for messages.
+  // https://api.slack.com/messaging/retrieving#individual_messages
+  const messageId = response.message?.ts;
 
-    return messageId
-      ? { data: messageId }
-      : { error: response.error ?? "Unknown error" };
-  } catch (error) {
-    console.warn("Announce oh no", { error });
-    throw error;
+  if (messageId) {
+    console.log("Posted message ID", messageId);
+    return { data: messageId };
   }
+
+  const error = response.error ?? "Unknown error";
+  console.log("Error posting", error);
+  return { error };
 }

@@ -7,8 +7,14 @@ async function run() {
   const sinks = {
     logger: {
       info: {
-        fn(workflowInfo: WorkflowInfo, message: string) {
-          console.log("workflow: ", workflowInfo.runId, "message: ", message);
+        fn(workflowInfo: WorkflowInfo, message: string, data?: unknown) {
+          console.log(
+            "workflow: ",
+            workflowInfo.runId,
+            "message: ",
+            message,
+            ...(data ? ["data: ", JSON.stringify(data)] : [])
+          );
         },
         callDuringReplay: false, // The default
       },

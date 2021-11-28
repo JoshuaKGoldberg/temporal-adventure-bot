@@ -1,9 +1,6 @@
 import { logger } from "../logger";
+import { Result } from "../types";
 import { activities } from "./activities";
-
-export interface StartGameOptions {
-  channel: string;
-}
 
 const announcement = `
 :wave: Hey everyone! We're going to be playing a little choose-your-own adventure game together! :raised_hands: 
@@ -14,14 +11,24 @@ The game is simple:
 3. :ballot_box_with_check: After the voting period closes, I'll take the step with the most votes and post again, going back to step 1.
 4. :checkered_flag: Eventually you'll finish the game -- and if you chose wisely, the ending will be a good one!
 
-...and that's about it! Let the games begin! :sunrise_over_mountains: 
+...and that's about it! :sunrise_over_mountains: 
 `.trim();
 
-export async function announceGame(channel: string) {
-  logger.info(`Announcing game in channel '${channel}'.`);
+export async function instructions(channel: string): Promise<Result> {
+  logger.info("Posting instructions");
 
-  await activities.post({
+  const result = await activities.post({
     channel,
     text: announcement,
+  });
+  if ("error" in result) {
+    return result;
+  }
+
+  logger.info("Pinning post", result.data);
+
+  return await activities.pin({
+    channel,
+    messageId: result.data,
   });
 }

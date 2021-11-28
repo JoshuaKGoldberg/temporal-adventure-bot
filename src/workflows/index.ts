@@ -1,2 +1,3 @@
+export * from "./instructions";
 export * from "./runGame";
-export * from "./announceGame";
+export * from "./startGame";
