@@ -14,7 +14,5 @@ export async function pin({ channel, messageId }: PinOptions): Promise<Result> {
     timestamp: messageId,
   });
 
-  console.log("Pin result", response);
-
   return response.error ? { error: response.error } : {};
 }
