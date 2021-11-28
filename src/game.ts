@@ -9,7 +9,7 @@ export const game: Game = {
         next: "left",
       },
       {
-        description: "The one on the left",
+        description: "The one on the right",
         next: "right",
       },
     ],

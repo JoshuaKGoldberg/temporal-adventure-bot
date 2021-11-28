@@ -1,29 +1,36 @@
 import { Connection, WorkflowClient } from "@temporalio/client";
-import { logger } from "./logger";
+import { sleep } from "@temporalio/workflow";
 
-import { playGame } from "./workflows";
-
-console.log("Inside execute-workflow...");
+import { announceGame, runGame } from "./workflows";
 
 async function run() {
-  console.log("Starting to run??");
   const connection = new Connection();
-  console.log("After connection");
   const client = new WorkflowClient(connection.service);
-  console.log("After client");
 
-  const result = await client.execute(playGame, {
-    args: [
-      {
-        channel: "random",
-        entry: "begin",
-      },
-    ],
-    taskQueue: "tutorial",
+  const channel = "random";
+  const executionOptions = {
+    taskQueue: "slack-adventure-bot",
     workflowId: "temporal-slack-adventure-bot",
-  });
-  console.log("Done with result " + JSON.stringify(result));
-  logger.info("Done with result " + JSON.stringify(result));
+  };
+
+  while (true) {
+    await client.execute(announceGame, {
+      args: [channel],
+      ...executionOptions,
+    });
+
+    await sleep("100 ms");
+
+    await client.execute(runGame, {
+      args: [
+        {
+          channel,
+          entry: "begin",
+        },
+      ],
+      ...executionOptions,
+    });
+  }
 }
 
 run().catch((err) => {

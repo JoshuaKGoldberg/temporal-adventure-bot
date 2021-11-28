@@ -1,18 +1,21 @@
-import { game } from "../game";
 import { logger } from "../logger";
 import { slack } from "../slack";
-import { formatEntryData } from "../text";
-import { Result, GameOptions } from "../types";
+import { Result } from "../types";
 
-export async function announce({
+export interface PostOptions {
+  channel: string;
+  text: string;
+}
+
+export async function post({
   channel,
-  entry,
-}: GameOptions): Promise<Result<string>> {
-  logger.info("Announce " + JSON.stringify({ channel, entry }));
+  text,
+}: PostOptions): Promise<Result<string>> {
+  logger.info(`Posting: ${JSON.stringify({ channel, text })}`);
   try {
     const response = await slack.client.chat.postMessage({
       channel,
-      text: formatEntryData(game[entry]),
+      text: `@here ${text}`,
     });
     logger.info("Announce a " + JSON.stringify({ response }));
 

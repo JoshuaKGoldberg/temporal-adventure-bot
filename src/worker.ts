@@ -1,4 +1,5 @@
 import { Worker } from "@temporalio/worker";
+import { WorkflowInfo } from "@temporalio/workflow";
 
 import * as activities from "./activities";
 
@@ -6,7 +7,7 @@ async function run() {
   const sinks = {
     logger: {
       info: {
-        fn(workflowInfo: any, message: string) {
+        fn(workflowInfo: WorkflowInfo, message: string) {
           console.log("workflow: ", workflowInfo.runId, "message: ", message);
         },
         callDuringReplay: false, // The default
@@ -15,7 +16,7 @@ async function run() {
   };
   const worker = await Worker.create({
     activities,
-    taskQueue: "default",
+    taskQueue: "slack-adventure-bot",
     workflowsPath: require.resolve("./workflows"),
     sinks,
   });

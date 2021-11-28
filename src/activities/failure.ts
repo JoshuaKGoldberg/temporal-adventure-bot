@@ -6,6 +6,8 @@ export interface FailureOptions {
 }
 
 export async function failure({ channel, error }: FailureOptions) {
+  console.log(`Failed: ${error}.`);
+
   try {
     await slack.client.chat.postMessage({
       channel,
