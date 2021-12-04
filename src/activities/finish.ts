@@ -1,4 +1,4 @@
-import { slack } from "../slack";
+import { slack } from "../api/slack";
 
 export interface FinishOptions {
   channel: string;

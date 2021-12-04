@@ -1,5 +1,4 @@
 import { logger } from "../logger";
-import { Result } from "../types";
 import { activities } from "./activities";
 
 const announcement = `
@@ -14,21 +13,15 @@ The game is simple:
 ...and that's about it! :sunrise_over_mountains: 
 `.trim();
 
-export async function instructions(channel: string): Promise<Result> {
+export async function instructions(channel: string) {
   logger.info("Posting instructions");
 
-  const result = await activities.post({
+  const messageId = await activities.post({
     channel,
     text: announcement,
   });
-  if ("error" in result) {
-    return result;
-  }
 
-  logger.info("Pinning post", result.data);
+  logger.info("Pinning post", messageId);
 
-  return await activities.pin({
-    channel,
-    messageId: result.data,
-  });
+  return await activities.pin({ channel, messageId });
 }

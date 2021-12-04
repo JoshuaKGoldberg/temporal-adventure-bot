@@ -13,23 +13,22 @@ async function run() {
             workflowInfo.runId,
             "message: ",
             message,
-            ...(data ? ["data: ", JSON.stringify(data)] : [])
+            ...(data ? [JSON.stringify(data)] : [])
           );
         },
-        callDuringReplay: false, // The default
       },
     },
   };
   const worker = await Worker.create({
     activities,
+    sinks,
     taskQueue: "slack-adventure-bot",
     workflowsPath: require.resolve("./workflows"),
-    sinks,
   });
   await worker.run();
 }
 
 run().catch((err) => {
-  console.error(err);
+  console.error("Oh no:", err);
   process.exit(1);
 });

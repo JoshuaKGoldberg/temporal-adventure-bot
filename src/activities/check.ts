@@ -1,7 +1,6 @@
 import { game } from "../game";
-import { slack } from "../slack";
+import { slack } from "../api/slack";
 import { emojiToIndex } from "../utils/entries";
-import { Result } from "../types";
 
 export interface CheckOptions {
   channel: string;
@@ -13,7 +12,7 @@ export async function check({
   channel,
   entry,
   messageId,
-}: CheckOptions): Promise<Result<string> | undefined> {
+}: CheckOptions): Promise<string | undefined> {
   console.log("Checking", messageId);
 
   // 1. Search for the message in channel history
@@ -40,7 +39,5 @@ export async function check({
   }
 
   // 4. Give back the corresponding next step for the best emoji index
-  return {
-    data: game[entry].options![emojiToIndex.get(bestReaction.name!)!].next,
-  };
+  return game[entry].options![emojiToIndex.get(bestReaction.name!)!].next;
 }

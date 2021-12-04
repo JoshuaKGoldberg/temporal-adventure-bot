@@ -1,10 +1,12 @@
 import { continueAsNew } from "@temporalio/workflow";
 
-import { activities } from "./activities";
+import { getForcedChoice } from "../api/force";
 import { logger } from "../logger";
+import { settings } from "../settings";
 import { formatEntryData } from "../utils/entries";
 import { checkRepeatedly } from "../utils/repeats";
 import { game } from "../game";
+import { activities } from "./activities";
 
 export interface PlayGameOptions {
   channel: string;
@@ -19,12 +21,8 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
     channel,
     text: `<!here> ${formatEntryData(game[entry])}`,
   });
-  if ("error" in announcement) {
-    await activities.failure({ channel, error: announcement.error });
-    return;
-  }
 
-  logger.info(`Posted entry at timestamp ${announcement.data}.`);
+  logger.info(`Posted entry at timestamp ${announcement}.`);
 
   const { options } = game[entry];
 
@@ -39,21 +37,20 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
   await activities.populate({
     channel,
     count: options.length,
-    messageId: announcement.data,
+    messageId: announcement,
   });
 
-  // 4. Continuously wait until there's another choice
-  const choice = await checkRepeatedly(
-    "5 seconds", // "1 day",
-    async () =>
-      await activities.check({ channel, entry, messageId: announcement.data })
-  );
-  if ("error" in choice) {
-    await activities.failure({ channel, error: choice.error });
-    return;
-  }
+  // 4. Continuously wait until a choice comes on the schedule or from an admin
+  const choice = await Promise.race([
+    checkRepeatedly(
+      settings.interval,
+      async () =>
+        await activities.check({ channel, entry, messageId: announcement })
+    ),
+    getForcedChoice(options),
+  ]);
 
-  // 5. Continue with the chosen next step in the game
-  logger.info("Received choice to continue", choice.data);
-  await continueAsNew({ channel, entry: choice.data });
+  // 5. Continue with that chosen next step in the game
+  logger.info("Received choice to continue", choice);
+  await continueAsNew({ channel, entry: choice });
 }

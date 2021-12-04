@@ -6,7 +6,7 @@ A sample [temporal.io](https://temporal.io/) application that posts a daily Slac
 
 1. Follow [Slack Bot Tokens](#slack-bot-tokens) below if you haven't yet
 1. Create an `.env` with your `SLACK_BOT_TOKEN` and `SLACK_SIGNING_SECRET`
-1. Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install/)).
+1. Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install)).
 1. `npm install` to install dependencies.
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.

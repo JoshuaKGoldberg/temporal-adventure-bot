@@ -1,12 +1,11 @@
-import { slack } from "../slack";
-import { Result } from "../types";
+import { slack } from "../api/slack";
 
 export interface PinOptions {
   channel: string;
   messageId: string;
 }
 
-export async function pin({ channel, messageId }: PinOptions): Promise<Result> {
+export async function pin({ channel, messageId }: PinOptions) {
   console.log("Pinning message", messageId);
 
   const response = await slack.client.pins.add({
@@ -14,5 +13,7 @@ export async function pin({ channel, messageId }: PinOptions): Promise<Result> {
     timestamp: messageId,
   });
 
-  return response.error ? { error: response.error } : {};
+  if (response.error) {
+    throw new Error(response.error);
+  }
 }

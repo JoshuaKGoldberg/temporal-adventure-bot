@@ -21,6 +21,7 @@ module.exports = {
       },
     ],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "deprecation/deprecation": "warn",
     "object-shorthand": ["error", "always"],
     "no-constant-condition": "off",

@@ -1,4 +1,4 @@
-import { slack } from "../slack";
+import { slack } from "../api/slack";
 import { indexToEmoji } from "../utils/entries";
 
 export interface PopulateOptions {

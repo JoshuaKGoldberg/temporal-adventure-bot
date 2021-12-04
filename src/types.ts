@@ -19,12 +19,4 @@ export interface GameOption {
   next: string;
 }
 
-export type Result<Data = void> = ResultFailure | ResultSuccess<Data>;
-
-export interface ResultFailure {
-  error: string;
-}
-
-export type ResultSuccess<Data> = Data extends void
-  ? Record<string, never>
-  : { data: Data };
+export type ForceInput = "random" | number;

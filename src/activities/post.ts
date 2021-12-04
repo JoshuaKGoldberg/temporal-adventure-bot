@@ -1,15 +1,11 @@
-import { slack } from "../slack";
-import { Result } from "../types";
+import { slack } from "../api/slack";
 
 export interface PostOptions {
   channel: string;
   text: string;
 }
 
-export async function post({
-  channel,
-  text,
-}: PostOptions): Promise<Result<string>> {
+export async function post({ channel, text }: PostOptions): Promise<string> {
   console.log("Posting", { channel, text });
   const response = await slack.client.chat.postMessage({
     channel,
@@ -20,12 +16,11 @@ export async function post({
   // https://api.slack.com/messaging/retrieving#individual_messages
   const messageId = response.message?.ts;
 
-  if (messageId) {
-    console.log("Posted message ID", messageId);
-    return { data: messageId };
+  if (!messageId) {
+    throw new Error(
+      `Error posting message: ${response.error ?? "Unknown error"}`
+    );
   }
 
-  const error = response.error ?? "Unknown error";
-  console.log("Error posting", error);
-  return { error };
+  return messageId;
 }

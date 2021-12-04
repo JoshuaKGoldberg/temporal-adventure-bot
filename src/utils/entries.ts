@@ -14,16 +14,16 @@ export const emojiToIndex = new Map(
   indexToEmoji.map((emoji, index) => [emoji, index] as const)
 );
 
-export function formatEntryData(data: GameEntry) {
-  if (!data.options) {
-    return data.description;
+export function formatEntryData(entry: GameEntry) {
+  if (!entry.options) {
+    return entry.description;
   }
 
   return [
-    data.description,
+    entry.description,
     "",
     "Options:",
-    ...data.options.map(
+    ...entry.options.map(
       (option, i) => `- :${indexToEmoji[i]}:: ${option.description}`
     ),
   ].join("\n");
