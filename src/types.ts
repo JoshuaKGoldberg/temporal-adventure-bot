@@ -20,3 +20,8 @@ export interface GameOption {
 }
 
 export type ForceInput = "random" | number;
+
+export interface NextChoice {
+  choice: string;
+  forced?: ForceInput;
+}

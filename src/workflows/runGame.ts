@@ -1,6 +1,6 @@
 import { continueAsNew } from "@temporalio/workflow";
 
-import { getForcedChoice } from "../api/force";
+import { getForcedChoice, printForced } from "../api/force";
 import { logger } from "../logger";
 import { settings } from "../settings";
 import { formatEntryData } from "../utils/entries";
@@ -41,7 +41,7 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
   });
 
   // 4. Continuously wait until a choice comes on the schedule or from an admin
-  const choice = await Promise.race([
+  const { choice, forced } = await Promise.race([
     checkRepeatedly(
       settings.interval,
       async () =>
@@ -50,7 +50,16 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
     getForcedChoice(options),
   ]);
 
-  // 5. Continue with that chosen next step in the game
-  logger.info("Received choice to continue", choice);
+  // 5. If the choice was forced by an admin, mention that
+  if (forced !== undefined) {
+    logger.info("Forcing choice from:", forced);
+    await activities.post({
+      channel,
+      text: printForced(forced),
+    });
+  }
+
+  // 6. Continue with that chosen next step in the game
+  logger.info("Received choice to continue:", choice);
   await continueAsNew({ channel, entry: choice });
 }

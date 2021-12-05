@@ -10,6 +10,16 @@ A sample [temporal.io](https://temporal.io/) application that posts a daily Slac
 1. `npm install` to install dependencies.
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
+1. Modify your Slack app manifest to include a slash command under `features`, using the ngrok URL logged by the workflow for `url`:
+
+```yml
+features:
+  slash_commands:
+    - command: /force
+      description: "Force an adventure choice: 'random' or a number for an option."
+      usage_hint: "0"
+      url: https://<your-unique-address>.ngrok.io
+```
 
 ### Slack Bot Tokens
 
@@ -18,6 +28,7 @@ A sample [temporal.io](https://temporal.io/) application that posts a daily Slac
      - `channels:read`
      - `chat:write.public`
      - `chat:write`
+     - `commands`
      - `pins:write`
      - `reactions:read`
      - `reactions:write`
