@@ -1,4 +1,3 @@
-/* eslint-disable */
 import * as discord from "discord.js";
 
 import { settings } from "../../settings";
