@@ -17,7 +17,8 @@ export async function runGame({ entry }: RunGameOptions) {
 
   // 1. Post the current entry as a Slack message in the channel
   const announcement = await activities.post({
-    text: `<!here> ${formatEntryData(game[entry])}`,
+    here: true,
+    text: `${formatEntryData(game[entry])}`,
   });
 
   logger.info(`Posted entry at timestamp ${announcement}.`);

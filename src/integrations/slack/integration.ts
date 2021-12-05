@@ -1,8 +1,8 @@
 import * as bolt from "@slack/bolt";
 import { WebAPICallResult } from "@slack/web-api";
 
-import { settings } from "../settings";
-import { Integration, MessageId, Reaction } from "./types";
+import { settings } from "../../settings";
+import { Integration, MessageId, Reaction, TextIntegration } from "../types";
 
 export type SlackIntegrationSettings = Pick<
   bolt.AppOptions,
@@ -16,7 +16,7 @@ const throwIfError = (response: WebAPICallResult, defaultMessage?: string) => {
 };
 
 export class SlackIntegration implements Integration {
-  readonly #slack: bolt.App;
+  #slack: bolt.App;
 
   constructor(settings: SlackIntegrationSettings) {
     this.#slack = new bolt.App({
@@ -28,7 +28,7 @@ export class SlackIntegration implements Integration {
   async addReaction(messageId: string, name: string) {
     throwIfError(
       await this.#slack.client.reactions.add({
-        channel: settings.channel,
+        channel: settings.slackChannel,
         timestamp: messageId,
         name,
       })
@@ -37,7 +37,7 @@ export class SlackIntegration implements Integration {
 
   async getReactions(messageId: MessageId) {
     const response = await this.#slack.client.reactions.get({
-      channel: settings.channel,
+      channel: settings.slackChannel,
       timestamp: messageId,
     });
 
@@ -53,7 +53,7 @@ export class SlackIntegration implements Integration {
   async pinMessage(messageId: MessageId) {
     throwIfError(
       await this.#slack.client.pins.add({
-        channel: settings.channel,
+        channel: settings.slackChannel,
         timestamp: messageId,
       })
     );
@@ -61,7 +61,7 @@ export class SlackIntegration implements Integration {
 
   async postMessage(text: string) {
     const response = await this.#slack.client.chat.postMessage({
-      channel: settings.channel,
+      channel: settings.slackChannel,
       text,
     });
 
@@ -75,4 +75,10 @@ export class SlackIntegration implements Integration {
 
     return messageId;
   }
+
+  text: TextIntegration = {
+    atHere: "@here",
+    emojiToName: (emoji) => emoji,
+    nameToEmoji: (name) => name,
+  };
 }

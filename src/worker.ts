@@ -3,16 +3,18 @@ import { WorkflowInfo } from "@temporalio/workflow";
 import * as dotenv from "dotenv";
 
 import { createActivities } from "./activities";
-import { SlackIntegration } from "./integrations/slack";
+import { DiscordIntegration } from "./integrations/discord/integration";
+// import { SlackIntegration } from "./integrations/slack/integration";
 import { settings } from "./settings";
 
 dotenv.config();
 
 async function run() {
-  const integration = new SlackIntegration({
-    signingSecret: process.env.SLACK_SIGNING_SECRET,
-    token: process.env.SLACK_BOT_TOKEN,
-  });
+  // const integration = new SlackIntegration({
+  //   signingSecret: process.env.SLACK_SIGNING_SECRET,
+  //   token: process.env.SLACK_BOT_TOKEN,
+  // });
+  const integration = await DiscordIntegration.create();
 
   const sinks = {
     logger: {

@@ -2,7 +2,8 @@ import { Connection, WorkflowClient, WorkflowHandle } from "@temporalio/client";
 import { Workflow } from "@temporalio/common";
 
 import { receiveCommandText } from "./api/force";
-import { createPostServer } from "./api/server";
+import { createDiscordExpressServer } from "./integrations/discord/server";
+// import { createSlackExpressServer } from "./integrations/slack/server";
 import { settings } from "./settings";
 import { delay } from "./utils/time";
 import { instructions, runGame } from "./workflows";
@@ -21,8 +22,11 @@ async function run() {
   // 2. While the game workflow is running, this variable will be populated
   let gameHandle: WorkflowHandle<Workflow> | undefined;
 
-  // 3. Start an HTTP server to receive Slack /force commands
-  await createPostServer(
+  // 3. Start an HTTP server to receive /force commands
+  // await createSlackExpressServer(
+  //   async (text) => await receiveCommandText(gameHandle, text)
+  // );
+  await createDiscordExpressServer(
     async (text) => await receiveCommandText(gameHandle, text)
   );
 

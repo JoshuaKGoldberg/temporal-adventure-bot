@@ -1,15 +1,14 @@
 import express from "express";
 import ngrok from "ngrok";
 
-import { settings } from "../settings";
-
-export type HandleText = (text: string) => Promise<string>;
+import { settings } from "../../settings";
+import { HandleText } from "../types";
 
 interface SlackMessageBody {
   text: string;
 }
 
-export const createPostServer = async (handleText: HandleText) => {
+export const createSlackExpressServer = async (handleText: HandleText) => {
   const url = await ngrok.connect(settings.port);
 
   console.log("Receiving Slack event POSTs on:", url);
