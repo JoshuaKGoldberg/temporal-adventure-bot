@@ -1,9 +1,19 @@
 import { Worker } from "@temporalio/worker";
 import { WorkflowInfo } from "@temporalio/workflow";
+import * as dotenv from "dotenv";
 
-import * as activities from "./activities";
+import { createActivities } from "./activities";
+import { SlackIntegration } from "./integrations/slack";
+import { settings } from "./settings";
+
+dotenv.config();
 
 async function run() {
+  const integration = new SlackIntegration({
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
+    token: process.env.SLACK_BOT_TOKEN,
+  });
+
   const sinks = {
     logger: {
       info: {
@@ -19,10 +29,11 @@ async function run() {
       },
     },
   };
+
   const worker = await Worker.create({
-    activities,
+    activities: createActivities(integration),
     sinks,
-    taskQueue: "slack-adventure-bot",
+    taskQueue: settings.taskQueue,
     workflowsPath: require.resolve("./workflows"),
   });
   await worker.run();

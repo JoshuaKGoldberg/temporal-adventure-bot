@@ -1,19 +1,9 @@
-import { slack } from "../api/slack";
-import { settings } from "../settings";
+import { Integration } from "../integrations/types";
 
 export interface PinOptions {
   messageId: string;
 }
 
-export async function pin({ messageId }: PinOptions) {
-  console.log("Pinning message", messageId);
-
-  const response = await slack.client.pins.add({
-    channel: settings.channel,
-    timestamp: messageId,
-  });
-
-  if (response.error) {
-    throw new Error(response.error);
-  }
+export async function pin(integration: Integration, { messageId }: PinOptions) {
+  return await integration.pinMessage(messageId);
 }
