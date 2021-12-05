@@ -4,6 +4,7 @@ import { Workflow } from "@temporalio/common";
 import { receiveCommandText } from "./api/force";
 import { createPostServer } from "./api/server";
 import { settings } from "./settings";
+import { delay } from "./utils/time";
 import { instructions, runGame } from "./workflows";
 import { startGame } from "./workflows/startGame";
 
@@ -11,9 +12,6 @@ const executionOptions = {
   taskQueue: settings.taskQueue,
   workflowId: settings.workflowId,
 };
-
-const halfSecondDelay = async () =>
-  await new Promise((resolve) => setTimeout(resolve, 500));
 
 async function run() {
   // 1. Create a connection to the Temporal service and a workflow client against it
@@ -31,13 +29,13 @@ async function run() {
   // 4. Log and pin channel-wide instructions just once,
   // then wait a half second to avoid triggering Slack API rate limits
   await client.execute(instructions, executionOptions);
-  await halfSecondDelay();
+  await delay("0.5 seconds");
 
   // 5. Start the game loop of announcing the current game entry,
   // again waiting a half second to avoid triggering Slack API rate limits
   while (true) {
     await client.execute(startGame, executionOptions);
-    await halfSecondDelay();
+    await delay("0.5 seconds");
 
     // 5a. Start the workflow that checks once a day for choice consensus
     const runningGame = client.execute(runGame, {
@@ -53,6 +51,9 @@ async function run() {
     gameHandle = client.getHandle(executionOptions.workflowId);
     await runningGame;
     gameHandle = undefined;
+
+    // 5c. Wait the interval, again, before starting another game
+    await delay(settings.interval);
   }
 }
 
