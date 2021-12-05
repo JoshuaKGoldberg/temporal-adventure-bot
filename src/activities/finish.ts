@@ -1,16 +1,13 @@
 import { slack } from "../api/slack";
-
-export interface FinishOptions {
-  channel: string;
-}
+import { settings } from "../settings";
 
 const message = `
 ...and, that's the end of the game. Thanks for playing everyone! :end: 
 `.trim();
 
-export const finish = async function finish({ channel }: FinishOptions) {
+export const finish = async function finish() {
   await slack.client.chat.postMessage({
-    channel,
+    channel: settings.channel,
     text: message,
   });
 };

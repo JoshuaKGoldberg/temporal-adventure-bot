@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export const slack = new bolt.App({
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
   logLevel: bolt.LogLevel.DEBUG,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
   token: process.env.SLACK_BOT_TOKEN,
 });

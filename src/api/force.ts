@@ -29,7 +29,7 @@ export const getForcedChoice = async (options: GameOption[]) => {
   };
 };
 
-export const parseCommandText = (text: string) => {
+const parseCommandText = (text: string) => {
   if (text === "random") {
     return text;
   }
@@ -46,7 +46,7 @@ export const printForced = (forced: ForceInput) => {
   return `🐌🙄 y'all took too long to choose! An admin has chosen *${printed}* for you.`;
 };
 
-export const receiveCommandText = (
+export const receiveCommandText = async (
   gameHandle: WorkflowHandle<Workflow> | undefined,
   text: string
 ) => {
@@ -59,7 +59,7 @@ export const receiveCommandText = (
     return `I'm sorry, I don't understand '${text}'... 😖`;
   }
 
-  gameHandle.signal(forceSignal, next);
+  await gameHandle.signal(forceSignal, next);
 
   return `👍 You got it! Going with *${next}*.`;
 };

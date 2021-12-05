@@ -1,5 +1,4 @@
 export interface GameOptions {
-  channel: string;
   entry: string;
 }
 

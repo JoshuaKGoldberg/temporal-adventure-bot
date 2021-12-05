@@ -1,16 +1,15 @@
 import { slack } from "../api/slack";
 import { game } from "../game";
+import { settings } from "../settings";
 import { NextChoice } from "../types";
 import { emojiToIndex } from "../utils/entries";
 
 export interface CheckOptions {
-  channel: string;
   entry: string;
   messageId: string;
 }
 
 export async function check({
-  channel,
   entry,
   messageId,
 }: CheckOptions): Promise<NextChoice | undefined> {
@@ -18,7 +17,7 @@ export async function check({
 
   // 1. Search for the message in channel history
   const response = await slack.client.reactions.get({
-    channel,
+    channel: settings.channel,
     timestamp: messageId,
   });
   if (!response.message?.reactions) {

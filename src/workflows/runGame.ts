@@ -8,17 +8,15 @@ import { checkRepeatedly } from "../utils/repeats";
 import { game } from "../game";
 import { activities } from "./activities";
 
-export interface PlayGameOptions {
-  channel: string;
+export interface RunGameOptions {
   entry: string;
 }
 
-export async function runGame({ channel, entry }: PlayGameOptions) {
+export async function runGame({ entry }: RunGameOptions) {
   logger.info("Running game at", entry);
 
   // 1. Post the current entry as a Slack message in the channel
   const announcement = await activities.post({
-    channel,
     text: `<!here> ${formatEntryData(game[entry])}`,
   });
 
@@ -29,13 +27,12 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
   // 2. If the entry has no options, the game is over
   if (!options) {
     logger.info("No choice: the game is over.");
-    await activities.finish({ channel });
+    await activities.finish();
     return;
   }
 
   // 3. Populate initial emoji reaction to the entry post
   await activities.populate({
-    channel,
     count: options.length,
     messageId: announcement,
   });
@@ -44,8 +41,7 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
   const { choice, forced } = await Promise.race([
     checkRepeatedly(
       settings.interval,
-      async () =>
-        await activities.check({ channel, entry, messageId: announcement })
+      async () => await activities.check({ entry, messageId: announcement })
     ),
     getForcedChoice(options),
   ]);
@@ -54,12 +50,11 @@ export async function runGame({ channel, entry }: PlayGameOptions) {
   if (forced !== undefined) {
     logger.info("Forcing choice from:", forced);
     await activities.post({
-      channel,
       text: printForced(forced),
     });
   }
 
   // 6. Continue with that chosen next step in the game
   logger.info("Received choice to continue:", choice);
-  await continueAsNew({ channel, entry: choice });
+  await continueAsNew({ entry: choice });
 }

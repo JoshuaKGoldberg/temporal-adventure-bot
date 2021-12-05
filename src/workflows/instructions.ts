@@ -13,15 +13,14 @@ The game is simple:
 ...and that's about it! :sunrise_over_mountains: 
 `.trim();
 
-export async function instructions(channel: string) {
+export async function instructions() {
   logger.info("Posting instructions");
 
   const messageId = await activities.post({
-    channel,
     text: announcement,
   });
 
   logger.info("Pinning post", messageId);
 
-  return await activities.pin({ channel, messageId });
+  await activities.pin({ messageId });
 }

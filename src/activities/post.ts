@@ -1,14 +1,14 @@
 import { slack } from "../api/slack";
+import { settings } from "../settings";
 
 export interface PostOptions {
-  channel: string;
   text: string;
 }
 
-export async function post({ channel, text }: PostOptions): Promise<string> {
-  console.log("Posting", { channel, text });
+export async function post({ text }: PostOptions): Promise<string> {
+  console.log("Posting", { text });
   const response = await slack.client.chat.postMessage({
-    channel,
+    channel: settings.channel,
     text,
   });
 

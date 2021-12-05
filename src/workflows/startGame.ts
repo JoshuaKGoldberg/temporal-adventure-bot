@@ -4,9 +4,8 @@ const announcement = `
 :arrow_right: *Let the game begin!*
 `.trim();
 
-export async function startGame(channel: string): Promise<void> {
+export async function startGame(): Promise<void> {
   await activities.post({
-    channel,
     text: announcement,
   });
 }
