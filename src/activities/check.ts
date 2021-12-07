@@ -22,6 +22,9 @@ export async function check(
 
   // 3. If nothing was voted on except for the automatic populated reaction, give nothing back
   if (bestReaction === undefined || bestReaction.count === 1) {
+    await integration.postMessage(
+      "Well, nobody posted, so... waiting another day!"
+    );
     return undefined;
   }
 
