@@ -11,7 +11,7 @@ interface SlackMessageBody {
 export const createSlackExpressServer = async (handleText: HandleText) => {
   const url = await ngrok.connect(settings.port);
 
-  console.log("Receiving Slack event POSTs on:", url);
+  console.log("Receiving Slack events on:", url);
 
   const app = express().use(express.urlencoded({ extended: true }));
 

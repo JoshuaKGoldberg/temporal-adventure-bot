@@ -1,7 +1,11 @@
 import * as discord from "discord.js";
 
 import { settings } from "../../settings";
-import { emojiNameToIndex, indexToEmojiName } from "../../utils/entries";
+import {
+  emojiNameToIndex,
+  emojiNameToSymbol,
+  indexToEmojiName,
+} from "../../utils/entries";
 import {
   CreatePollOptions,
   Integration,
@@ -9,20 +13,6 @@ import {
   PostMessageOptions,
 } from "../types";
 import { getDiscordClient } from "./client";
-
-const emojiNameToSymbol: Record<string, string> = {
-  one: "1️⃣",
-  two: "2️⃣",
-  three: "3️⃣",
-  four: "4️⃣",
-  five: "5️⃣",
-  six: "6️⃣",
-  seven: "7️⃣",
-};
-
-const emojiToName: Record<string, string> = Object.fromEntries(
-  Object.entries(emojiNameToSymbol).map(([name, emoji]) => [emoji, name])
-);
 
 export class DiscordIntegration implements Integration {
   #channel: discord.TextBasedChannels;
@@ -68,7 +58,7 @@ export class DiscordIntegration implements Integration {
     return message.id;
   }
 
-  static async create() {
+  static create = async () => {
     const client = await getDiscordClient();
     const channel = await client.channels.fetch(settings.discordChannel);
 
@@ -77,5 +67,5 @@ export class DiscordIntegration implements Integration {
     }
 
     return new DiscordIntegration(channel);
-  }
+  };
 }

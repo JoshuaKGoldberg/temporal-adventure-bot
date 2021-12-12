@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 import express from "express";
 import ngrok from "ngrok";
 
@@ -6,12 +5,10 @@ import { settings } from "../../settings";
 import { HandleText } from "../types";
 import { getDiscordClient } from "./client";
 
-dotenv.config();
-
 export const createDiscordExpressServer = async (handleText: HandleText) => {
   const url = await ngrok.connect(settings.port);
 
-  console.log("Receiving Discord event POSTs on:", url);
+  console.log("Receiving Discord events on:", url);
 
   const app = express().use(express.urlencoded({ extended: true }));
 
@@ -27,7 +24,7 @@ export const createDiscordExpressServer = async (handleText: HandleText) => {
   const client = await getDiscordClient();
 
   client.on("ready", async () => {
-    await client.application!.commands.create({
+    await client.application.commands.create({
       description: "Force an adventure choice",
       name: "force",
       options: [

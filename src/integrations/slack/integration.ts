@@ -1,6 +1,5 @@
 import * as bolt from "@slack/bolt";
 import { WebAPICallResult } from "@slack/web-api";
-import { logger } from "../../logger";
 
 import { settings } from "../../settings";
 import { emojiNameToIndex, indexToEmojiName } from "../../utils/entries";
@@ -11,11 +10,6 @@ import {
   PostMessageOptions,
 } from "../types";
 
-export type SlackIntegrationSettings = Pick<
-  bolt.AppOptions,
-  "signingSecret" | "token"
->;
-
 const throwIfError = (response: WebAPICallResult, defaultMessage?: string) => {
   if (response.error) {
     throw new Error(response.error ?? defaultMessage);
@@ -25,10 +19,10 @@ const throwIfError = (response: WebAPICallResult, defaultMessage?: string) => {
 export class SlackIntegration implements Integration {
   #slack: bolt.App;
 
-  constructor(settings: SlackIntegrationSettings) {
+  constructor() {
     this.#slack = new bolt.App({
-      logLevel: bolt.LogLevel.INFO,
-      ...settings,
+      signingSecret: process.env.SLACK_SIGNING_SECRET,
+      token: process.env.SLACK_BOT_TOKEN,
     });
   }
 
@@ -37,9 +31,6 @@ export class SlackIntegration implements Integration {
       notify: true,
       text: options.prompt,
     });
-
-    logger.info("Hello  from logger", options);
-    console.log("Hello from console", { options }, options.choices);
 
     await Promise.all(
       options.choices.map(async (_, index) =>
@@ -100,4 +91,6 @@ export class SlackIntegration implements Integration {
 
     return messageId;
   }
+
+  static create = async () => Promise.resolve(new SlackIntegration());
 }

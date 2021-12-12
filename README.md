@@ -10,10 +10,15 @@ Regardless of which integration you intend on using:
 - Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install)).
 - `npm install` to install dependencies.
 
+You'll need to create an `.env` file containing exactly one of:
+
+- `SOCIAL_PLATFORM=discord`
+- `SOCIAL_PLATFORM=slack`
+
 ### Usage: Discord
 
 1. Follow [Discord Bot Tokens](#discord-bot-tokens) below if you haven't yet
-1. Create an `.env` with your `DISCORD_BOT_TOKEN`
+1. Put your `DISCORD_BOT_TOKEN` into `.env`
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
 1. On your Discord application's Settings > OAuth2 > General (`https://discord.com/developers/applications/*/oauth2/general`), copy the ngrok URL logged by the workflow into a Redirects URL and save
@@ -35,7 +40,7 @@ Regardless of which integration you intend on using:
 ### Usage: Slack
 
 1. Follow [Slack Bot Tokens](#slack-bot-tokens) below if you haven't yet
-1. Create an `.env` with your `SLACK_BOT_TOKEN` and `SLACK_SIGNING_SECRET`
+1. Put your `SLACK_BOT_TOKEN` and `SLACK_SIGNING_SECRET` into `.env`
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
 1. Modify your Slack app manifest to include a slash command under `features`, using the ngrok URL logged by the workflow for `url`:
