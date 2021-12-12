@@ -48,7 +48,7 @@
     "lint": "eslint .",
     "start.watch": "nodemon src/worker.ts",
     "start": "ts-node src/worker.ts",
-    "workflow": "ts-node src/execute-workflow.ts"
+    "workflow": "ts-node src/client.ts"
   },
   "version": "0.1.0"
 }

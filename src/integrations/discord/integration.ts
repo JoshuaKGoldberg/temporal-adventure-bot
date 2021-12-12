@@ -1,25 +1,46 @@
 import * as discord from "discord.js";
 
 import { settings } from "../../settings";
-import { Integration, MessageId, TextIntegration } from "../types";
+import { emojiNameToIndex, indexToEmojiName } from "../../utils/entries";
+import {
+  CreatePollOptions,
+  Integration,
+  MessageId,
+  PostMessageOptions,
+} from "../types";
 import { getDiscordClient } from "./client";
-import { createDiscordTextIntegration } from "./text";
+
+const emojiNameToSymbol: Record<string, string> = {
+  one: "1️⃣",
+  two: "2️⃣",
+  three: "3️⃣",
+  four: "4️⃣",
+  five: "5️⃣",
+  six: "6️⃣",
+  seven: "7️⃣",
+};
+
+const emojiToName: Record<string, string> = Object.fromEntries(
+  Object.entries(emojiNameToSymbol).map(([name, emoji]) => [emoji, name])
+);
 
 export class DiscordIntegration implements Integration {
   #channel: discord.TextBasedChannels;
 
-  text: TextIntegration;
-
   private constructor(channel: discord.TextBasedChannels) {
     this.#channel = channel;
-    this.text = createDiscordTextIntegration(channel.id);
   }
 
-  async addReaction(messageId: string, name: string) {
-    const message = await this.#channel.messages.fetch(messageId);
-    const emoji = this.text.nameToEmoji(name);
+  async createPoll(options: CreatePollOptions) {
+    const message = await this.#channel.send(options.prompt);
 
-    await message.react(emoji);
+    await Promise.all(
+      options.choices.map(async (_, index) => {
+        await message.react(emojiNameToSymbol[indexToEmojiName[index]]);
+      })
+    );
+
+    return message.id;
   }
 
   async getReactions(messageId: MessageId) {
@@ -27,8 +48,9 @@ export class DiscordIntegration implements Integration {
     const reactions = Array.from(message.reactions.cache.values());
 
     return reactions.map((reaction) => ({
-      count: reaction.count,
-      name: this.text.emojiToName(reaction.emoji.name!),
+      // We reduce count by 1 since this bot gives 1 vote to every option
+      count: reaction.count - 1,
+      index: emojiNameToIndex[reaction.emoji.name!],
     }));
   }
 
@@ -38,8 +60,10 @@ export class DiscordIntegration implements Integration {
     await message.pin();
   }
 
-  async postMessage(text: string) {
-    const message = await this.#channel.send(text);
+  async postMessage({ notify, text }: PostMessageOptions) {
+    const message = await this.#channel.send(
+      notify ? `${this.#channel} ${text}` : text
+    );
 
     return message.id;
   }

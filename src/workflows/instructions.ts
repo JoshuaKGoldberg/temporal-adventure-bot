@@ -16,11 +16,11 @@ The game is simple:
 export async function instructions() {
   logger.info("Posting instructions");
 
-  const messageId = await activities.post({
+  const messageId = await activities.postMessage({
     text: announcement,
   });
 
   logger.info("Pinning post", messageId);
 
-  await activities.pin({ messageId });
+  await activities.pinMessage({ messageId });
 }

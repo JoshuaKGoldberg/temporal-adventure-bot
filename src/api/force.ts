@@ -4,7 +4,7 @@ import * as wf from "@temporalio/workflow";
 
 import { logger } from "../logger";
 import { ForceInput, GameOption } from "../types";
-import { indexToEmoji } from "../utils/entries";
+import { indexToEmojiName } from "../utils/entries";
 
 const forceSignal = wf.defineSignal<[ForceInput]>("force");
 
@@ -41,7 +41,7 @@ const parseCommandText = (text: string) => {
 
 export const printForced = (forced: ForceInput) => {
   const printed =
-    forced === "random" ? "randomly" : `:${indexToEmoji[forced]}:`;
+    forced === "random" ? "randomly" : `:${indexToEmojiName[forced]}:`;
 
   return `🐌🙄 y'all took too long to choose! An admin has chosen *${printed}* for you.`;
 };

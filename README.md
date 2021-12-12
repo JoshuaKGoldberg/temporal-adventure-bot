@@ -1,6 +1,6 @@
 # Temporal Adventure Bot
 
-A sample [temporal.io](https://temporal.io/) application that posts a daily Discord or Slack message for interactive choose-your-own-adventure stories. ✨
+A sample [temporal.io](https://temporal.io) application that posts a daily Discord or Slack message for interactive choose-your-own-adventure stories. ✨
 
 ## Usage
 

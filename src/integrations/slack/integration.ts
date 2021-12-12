@@ -1,8 +1,15 @@
 import * as bolt from "@slack/bolt";
 import { WebAPICallResult } from "@slack/web-api";
+import { logger } from "../../logger";
 
 import { settings } from "../../settings";
-import { Integration, MessageId, Reaction, TextIntegration } from "../types";
+import { emojiNameToIndex, indexToEmojiName } from "../../utils/entries";
+import {
+  CreatePollOptions,
+  Integration,
+  MessageId,
+  PostMessageOptions,
+} from "../types";
 
 export type SlackIntegrationSettings = Pick<
   bolt.AppOptions,
@@ -25,14 +32,28 @@ export class SlackIntegration implements Integration {
     });
   }
 
-  async addReaction(messageId: string, name: string) {
-    throwIfError(
-      await this.#slack.client.reactions.add({
-        channel: settings.slackChannel,
-        timestamp: messageId,
-        name,
-      })
+  async createPoll(options: CreatePollOptions) {
+    const messageId = await this.postMessage({
+      notify: true,
+      text: options.prompt,
+    });
+
+    logger.info("Hello  from logger", options);
+    console.log("Hello from console", { options }, options.choices);
+
+    await Promise.all(
+      options.choices.map(async (_, index) =>
+        throwIfError(
+          await this.#slack.client.reactions.add({
+            channel: settings.slackChannel,
+            timestamp: messageId,
+            name: indexToEmojiName[index],
+          })
+        )
+      )
     );
+
+    return messageId;
   }
 
   async getReactions(messageId: MessageId) {
@@ -47,7 +68,11 @@ export class SlackIntegration implements Integration {
       throw new Error(response.error ?? "Could not retrieve reactions.");
     }
 
-    return reactions as Reaction[];
+    return reactions.map((reaction) => ({
+      // We reduce count by 1 since this bot gives 1 vote to every option
+      count: reaction.count! - 1,
+      index: emojiNameToIndex[reaction.name!],
+    }));
   }
 
   async pinMessage(messageId: MessageId) {
@@ -59,10 +84,10 @@ export class SlackIntegration implements Integration {
     );
   }
 
-  async postMessage(text: string) {
+  async postMessage({ notify, text }: PostMessageOptions) {
     const response = await this.#slack.client.chat.postMessage({
       channel: settings.slackChannel,
-      text,
+      text: notify ? `@here ${text}` : text,
     });
 
     // Slack keeps timestamps as equivalents to unique IDs for messages.
@@ -75,10 +100,4 @@ export class SlackIntegration implements Integration {
 
     return messageId;
   }
-
-  text: TextIntegration = {
-    atHere: "@here",
-    emojiToName: (emoji) => emoji,
-    nameToEmoji: (name) => name,
-  };
 }

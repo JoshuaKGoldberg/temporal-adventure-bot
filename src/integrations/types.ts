@@ -1,31 +1,34 @@
 export interface Integration {
-  addReaction: AddReaction;
+  createPoll: CreatePoll;
   getReactions: GetReactions;
   pinMessage: PinMessage;
   postMessage: PostMessage;
-  text: TextIntegration;
 }
 
 export type MessageId = string;
 
-export type AddReaction = (messageId: string, name: string) => Promise<void>;
+export interface CreatePollOptions {
+  choices: string[];
+  prompt: string;
+}
+
+export type CreatePoll = (options: CreatePollOptions) => Promise<MessageId>;
 
 export interface Reaction {
   count: number;
-  name: string;
+  index: number;
 }
 
 export type GetReactions = (messageId: MessageId) => Promise<Reaction[]>;
 
 export type PinMessage = (messageId: MessageId) => Promise<void>;
 
-export type PostMessage = (text: string) => Promise<MessageId>;
-
-export interface TextIntegration {
-  atHere: string;
-  emojiToName: (name: string) => string;
-  nameToEmoji: (name: string) => string;
+export interface PostMessageOptions {
+  notify?: boolean;
+  text: string;
 }
+
+export type PostMessage = (options: PostMessageOptions) => Promise<MessageId>;
 
 export interface WithIntegration {
   integration: Integration;

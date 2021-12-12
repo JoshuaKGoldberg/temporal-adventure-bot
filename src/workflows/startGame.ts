@@ -5,7 +5,7 @@ const announcement = `
 `.trim();
 
 export async function startGame(): Promise<void> {
-  await activities.post({
+  await activities.postMessage({
     text: announcement,
   });
 }
