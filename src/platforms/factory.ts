@@ -7,7 +7,7 @@ import { createSlackExpressServer } from "./slack/server";
 
 dotenv.config();
 
-export const integrationFactory = () => {
+export const platformFactory = () => {
   const platform = process.env.SOCIAL_PLATFORM;
 
   switch (platform) {

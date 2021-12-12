@@ -1,4 +1,4 @@
-import { Integration } from "../integrations/types";
+import { Integration } from "../platforms/types";
 
 export interface PinMessageOptions {
   messageId: string;

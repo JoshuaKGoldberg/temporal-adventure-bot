@@ -1,4 +1,4 @@
-import { CreatePollOptions, Integration } from "../integrations/types";
+import { CreatePollOptions, Integration } from "../platforms/types";
 
 export async function createPoll(
   integration: Integration,

@@ -30,8 +30,4 @@ export interface PostMessageOptions {
 
 export type PostMessage = (options: PostMessageOptions) => Promise<MessageId>;
 
-export interface WithIntegration {
-  integration: Integration;
-}
-
 export type HandleText = (text: string) => Promise<string>;

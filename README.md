@@ -5,7 +5,7 @@ A sample [temporal.io](https://temporal.io) application that posts a daily Disco
 ## Usage
 
 You can use this bot integrated with Discord, Slack, or (todo) Twitter.
-Regardless of which integration you intend on using:
+Regardless of which platform integration you intend on using:
 
 - Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install)).
 - `npm install` to install dependencies.

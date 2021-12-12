@@ -1,4 +1,4 @@
-import { Integration } from "../integrations/types";
+import { Integration } from "../platforms/types";
 import { createPoll } from "./createPoll";
 import { getReactions } from "./getReactions";
 import { pinMessage } from "./pinMessage";

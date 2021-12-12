@@ -1,4 +1,4 @@
-import { PostMessageOptions, Integration } from "../integrations/types";
+import { PostMessageOptions, Integration } from "../platforms/types";
 
 export async function postMessage(
   integration: Integration,

@@ -2,11 +2,11 @@ import { Worker } from "@temporalio/worker";
 import { WorkflowInfo } from "@temporalio/workflow";
 
 import { createActivities } from "./activities";
-import { integrationFactory } from "./integrations/factory";
+import { platformFactory } from "./platforms/factory";
 import { settings } from "./settings";
 
 async function run() {
-  const { createIntegration } = integrationFactory();
+  const { createIntegration } = platformFactory();
   const integration = await createIntegration();
 
   const sinks = {

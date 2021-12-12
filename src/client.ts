@@ -2,7 +2,7 @@ import { Connection, WorkflowClient, WorkflowHandle } from "@temporalio/client";
 import { Workflow } from "@temporalio/common";
 
 import { receiveCommandText } from "./api/force";
-import { integrationFactory } from "./integrations/factory";
+import { platformFactory } from "./platforms/factory";
 import { settings } from "./settings";
 import { delay } from "./utils/time";
 import { instructions, runGame } from "./workflows";
@@ -22,7 +22,7 @@ async function run() {
   let gameHandle: WorkflowHandle<Workflow> | undefined;
 
   // 3. Start an HTTP server to receive /force commands
-  const { createServer } = integrationFactory();
+  const { createServer } = platformFactory();
   await createServer(
     async (text) => await receiveCommandText(gameHandle, text)
   );

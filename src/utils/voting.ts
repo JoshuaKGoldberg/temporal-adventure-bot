@@ -1,4 +1,4 @@
-import { Reaction } from "../integrations/types";
+import { Reaction } from "../platforms/types";
 import { GameOption, NextChoice } from "../types";
 
 export const collectConsensus = (
