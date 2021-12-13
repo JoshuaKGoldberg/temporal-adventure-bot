@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 import ngrok from "ngrok";
 
 import { settings } from "../../settings";

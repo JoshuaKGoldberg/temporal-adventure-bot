@@ -47,13 +47,9 @@ export const printForced = (forced: ForceInput) => {
 };
 
 export const receiveCommandText = async (
-  gameHandle: WorkflowHandle<Workflow> | undefined,
+  gameHandle: WorkflowHandle<Workflow>,
   text: string
 ) => {
-  if (!gameHandle) {
-    return "Hmm 🤔, looks like there isn't a game happening right now? Try again later.";
-  }
-
   const next = parseCommandText(text);
   if (next === undefined) {
     return `I'm sorry, I don't understand '${text}'... 😖`;
