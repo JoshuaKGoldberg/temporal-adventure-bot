@@ -32,11 +32,11 @@ export const emojiSymbolToName = Object.fromEntries(
 
 export function formatEntryData(entry: GameEntry) {
   if (!entry.options) {
-    return entry.description;
+    return entry.description.join("\n");
   }
 
   return [
-    entry.description,
+    ...entry.description,
     "",
     "Options:",
     ...entry.options.map(

@@ -24,7 +24,7 @@ export async function runGame({ entry }: RunGameOptions) {
     await activities.postMessage({
       notify: true,
       text: `
-${game[entry].description}
+${game[entry].description.join("\n")}
 ...and, that's the end of the game. Thanks for playing everyone! :end:
 `.trim(),
     });

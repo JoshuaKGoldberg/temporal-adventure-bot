@@ -7,7 +7,7 @@ export interface Game {
 }
 
 export interface GameEntry {
-  description: string;
+  description: string[];
   options?: GameOption[];
 }
 
