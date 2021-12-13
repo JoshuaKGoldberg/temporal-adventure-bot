@@ -34,28 +34,23 @@ async function run() {
 
   // 5. Start the game loop of announcing the current game entry,
   // again waiting a half second to avoid triggering Slack API rate limits
-  while (true) {
-    await client.execute(startGame, executionOptions);
-    await delay("0.5 seconds");
+  await client.execute(startGame, executionOptions);
+  await delay("0.5 seconds");
 
-    // 5a. Start the workflow that checks once a day for choice consensus
-    const runningGame = client.execute(runGame, {
-      args: [
-        {
-          entry: "begin",
-        },
-      ],
-      ...executionOptions,
-    });
+  // 6. Start the workflow that checks once a day for choice consensus
+  const runningGame = client.execute(runGame, {
+    args: [
+      {
+        entry: "begin",
+      },
+    ],
+    ...executionOptions,
+  });
 
-    // 5b. Store that workflow handle during the game in case of admin /force
-    gameHandle = client.getHandle(executionOptions.workflowId);
-    await runningGame;
-    gameHandle = undefined;
-
-    // 5c. Wait the interval, again, before starting another game
-    await delay(settings.interval);
-  }
+  // 7. Store that workflow handle during the game in case of admin /force
+  gameHandle = client.getHandle(executionOptions.workflowId);
+  await runningGame;
+  gameHandle = undefined;
 }
 
 run().catch((err) => {

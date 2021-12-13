@@ -36,7 +36,10 @@ const parseCommandText = (text: string) => {
 
   const next = parseInt(text);
 
-  return isNaN(next) ? undefined : next;
+  return isNaN(next)
+    ? undefined
+    : // Use 1-based instead of 0-based to be user-friendly
+      next + 1;
 };
 
 export const printForced = (forced: ForceInput) => {

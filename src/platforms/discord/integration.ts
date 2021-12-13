@@ -24,11 +24,9 @@ export class DiscordIntegration implements Integration {
   async createPoll(options: CreatePollOptions) {
     const message = await this.#channel.send(options.prompt);
 
-    await Promise.all(
-      options.choices.map(async (_, index) => {
-        await message.react(emojiNameToSymbol[indexToEmojiName[index]]);
-      })
-    );
+    for (let i = 0; i < options.choices.length; i += 1) {
+      await message.react(emojiNameToSymbol[indexToEmojiName[i]]);
+    }
 
     return message.id;
   }

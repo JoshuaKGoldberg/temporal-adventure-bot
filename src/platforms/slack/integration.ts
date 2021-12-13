@@ -32,17 +32,15 @@ export class SlackIntegration implements Integration {
       text: options.prompt,
     });
 
-    await Promise.all(
-      options.choices.map(async (_, index) =>
-        throwIfError(
-          await this.#slack.client.reactions.add({
-            channel: settings.slackChannel,
-            timestamp: messageId,
-            name: indexToEmojiName[index],
-          })
-        )
-      )
-    );
+    for (let i = 0; i < options.choices.length; i += 1) {
+      throwIfError(
+        await this.#slack.client.reactions.add({
+          channel: settings.slackChannel,
+          timestamp: messageId,
+          name: indexToEmojiName[i],
+        })
+      );
+    }
 
     return messageId;
   }
@@ -78,7 +76,7 @@ export class SlackIntegration implements Integration {
   async postMessage({ notify, text }: PostMessageOptions) {
     const response = await this.#slack.client.chat.postMessage({
       channel: settings.slackChannel,
-      text: notify ? `@here ${text}` : text,
+      text: notify ? `<!here> ${text}` : text,
     });
 
     // Slack keeps timestamps as equivalents to unique IDs for messages.

@@ -45,14 +45,14 @@ export const game: Game = {
       `They take a long drink of milk, finishing the glass, and smile.`,
       `_"A pleasure doing business with you, giant. You as well, human."_`,
       `They hand you one of the bags and take the other two out the door.`,
-      `Blunderbore stomps off into another room as well. You can hear his curses echoing. Now seems like a very good time to leave.`,
+      `Blunderbore stomps off into another room. You can hear his curses echoing. Now seems like a very good time to leave.`,
       `You make your way back down the beanstalk to the family farm.`,
       ...happilyEverAfter,
     ],
   },
   begin: {
     description: [
-      `Good morning, Jack Spriggins! It's a beautiful day in 18th century England. Your family farm, plagued by thievery and misfortune, has fallen on hard times; your parents decided to sell your beloved old pet cow Bessy for coin to purchase more chickens. The market is opening soon and you should take her there soon.`,
+      `Good morning, Jack Spriggins! It's a beautiful day in 18th century England. Your family farm, plagued by thievery and misfortune, has fallen on hard times. Your parents told you to sell your beloved old pet cow Bessy for coin to purchase more chickens. The market is opening soon and you should take her there soon.`,
     ],
     options: [
       {
@@ -72,7 +72,7 @@ export const game: Game = {
   bond: {
     description: [
       `You can still remember the day your parents took in Bessy as a pet. She was a gentle cow who never kicked anybody or ate more than her share of grass. Truly a gentle and kind spirit.`,
-      `These days she doesn't have the same fire in her spirit or jump in her step the way she used to. Yet she still lumbers over to the door as you take her her morning feed snack. You reward her spirit with gentle pets and scratches in the spot behind her ear she enjoys so much.`,
+      `These days she doesn't have the same fire in her spirit or jump in her step the way she used to. Yet she still lumbers over to the door to greet you as you take her her morning feed snack. You reward her spirit with gentle pets and scratches in the spot behind her ear she enjoys so much.`,
       `Walking with Bessy through your family fields warms your heart in a way only old Bessy can. You just can't bring yourself to take her to the market.`,
       poorDeath,
     ],
@@ -100,7 +100,7 @@ export const game: Game = {
       `The sides of the beanstalk are rough enough that you're able to climb all the way up using your trusty rake as a walking stick.`,
       `You find the beanstalk ends just after rising above a dense white puffy cloud.`,
       `Amazingly, you can step off the beanstalk on top of the cloud.`,
-      `It feels like stepping into a shallow pond but with wispy gentle puffs of air at your feet instead of water.`,
+      `It feels like stepping into a shallow pond but with slow puffs of air at your feet instead of water.`,
       `Not but twenty paces from the tip of the beanstalk is the entrance to an extravagantly large mansion.`,
       `The mansion is large both in its architecture -four stories with dozens of windows each- as well as its physical scale, with a front door seemingly made for twice the height or width of a normal person.`,
     ],
@@ -123,7 +123,7 @@ export const game: Game = {
     description: [
       `You thank Blunderbore for the kind invite and graciously excuse yourself as needing to attend to the family farm.`,
       `The two of you cheerfully wish each other good tidings before you make your way back down the beanstalk.`,
-      ...poorDeath,
+      poorDeath,
     ],
   },
   declineWager: {
@@ -131,7 +131,7 @@ export const game: Game = {
       `You don't feel comfortable committing to such a wager when you don't comprehend the game itself.`,
       `Both seem a little disappointed.`,
       `You thank the two for their hospitality and make your way back down the beanstalk to the family farm.`,
-      ...poorDeath,
+      poorDeath,
     ],
   },
   introduce: {
@@ -189,7 +189,7 @@ export const game: Game = {
     description: [
       `Bessy is a good old cow and follows you to the market without resistance. You try bringing her to several booths to trade but nobody wants an old cow.`,
       `After a few grueling hours of haggling and pleading, you're just about ready to go home...`,
-      `...when suddenly, emerging out of the shadows behind a corn-on-the-cob booth, a tall, thin, hooded figure steps in front of you.`,
+      `...when suddenly, emerging out of the shadows behind a vegetable booth, a tall, thin, hooded figure steps in front of you.`,
       `Their hood obscures their face but you can see wisps of bright red hair glimmering through.`,
       `_"Hello, Jack"_, the figure murmurs in a voice both gently quiet and yet clear to hear.`,
       `_"I would like to purchase your Bessy. I have no coin of man but can offer you a set of magic beans. Plant them in your farm tonight and come tomorrow morning they will grow beyond your wildest dreams."_`,
@@ -213,7 +213,7 @@ export const game: Game = {
     description: [
       `There be giants. Your parents raised you better than to meddle in the affairs of gigantic mythical creatures.`,
       `You nope on out of there and make your way back home.`,
-      ...poorDeath,
+      poorDeath,
     ],
   },
   refuseBeans: {
@@ -229,7 +229,7 @@ export const game: Game = {
       `You scream in terror and bolt back to the beanstalk, dropping your rake behind you.`,
       `The way back down without the rake is difficult.`,
       `Midway through, you lose your balance and plummet down to your death`,
-      ...poorDeath,
+      poorDeath,
     ],
   },
   sleep: {
@@ -256,7 +256,7 @@ export const game: Game = {
       `The door opens to reveal a sweaty twelve-foot-high giant of a man dressed as a gentleman.`,
       `You try to run but there's no use: the giant catches up to you before you make it back to the window.`,
       `The last thing you see is the lush carpet unexpectedly rushing to meet your head: and then, nothing.`,
-      ...poorDeath,
+      poorDeath,
     ],
   },
   stealBeans: {
