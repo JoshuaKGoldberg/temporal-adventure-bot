@@ -50,7 +50,7 @@ ${game[entry].description.join("\n")}
       const consensus = collectConsensus(options, reactions);
 
       switch (consensus) {
-        case undefined:
+        case "none":
           await activities.postMessage({
             notify: true,
             text: `Well, nobody posted, so... waiting another ${settings.interval}!`,

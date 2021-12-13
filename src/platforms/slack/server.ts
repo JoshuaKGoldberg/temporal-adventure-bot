@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import ngrok from "ngrok";
 
 import { settings } from "../../settings";
@@ -15,6 +15,10 @@ export const createSlackExpressServer = async (handleText: HandleText) => {
 
   const app = express().use(express.urlencoded({ extended: true }));
 
+  app.get("/", (_, response) => {
+    response.status(200).send().end();
+  });
+
   app.post("/", async (request, response) => {
     const { text } = request.body as SlackMessageBody;
     console.log("Received Slack POST with text:", text);
@@ -25,5 +29,9 @@ export const createSlackExpressServer = async (handleText: HandleText) => {
     response.status(200).send(message).end();
   });
 
-  app.listen(settings.port);
+  const server = app.listen(settings.port);
+
+  return () => {
+    server.close();
+  };
 };

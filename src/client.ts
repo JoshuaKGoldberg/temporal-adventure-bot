@@ -1,5 +1,4 @@
-import { Connection, WorkflowClient, WorkflowHandle } from "@temporalio/client";
-import { Workflow } from "@temporalio/common";
+import { Connection, WorkflowClient } from "@temporalio/client";
 
 import { receiveCommandText } from "./api/force";
 import { platformFactory } from "./platforms/factory";
@@ -29,19 +28,18 @@ async function run() {
     ...executionOptions,
   });
 
-  // 4. While the game workflow is running, this variable will be populated
-  let gameHandle: WorkflowHandle<Workflow> | undefined;
+  // 4. Retrieve a handle to the client workflow so admin commands can signal to it
+  const gameHandle = client.getHandle(executionOptions.workflowId);
 
   // 5. Start an HTTP server to receive /force commands
   const { createServer } = platformFactory();
-  await createServer(
+  const closeServer = await createServer(
     async (text) => await receiveCommandText(gameHandle, text)
   );
 
-  // 6. Store that workflow handle during the game in case of admin /force
-  gameHandle = client.getHandle(executionOptions.workflowId);
+  // 6. Wait for the result of finishing the game, then close the server
   await runningGame;
-  gameHandle = undefined;
+  closeServer();
 }
 
 run().catch((err) => {

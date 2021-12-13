@@ -4,13 +4,13 @@ import { GameOption, NextChoice } from "../types";
 export const collectConsensus = (
   options: GameOption[],
   reactions: Reaction[]
-): NextChoice | "tie" | undefined => {
+): NextChoice | "none" | "tie" => {
   // 1. Sort the options by how many votes they received
   const sortedReactions = [...reactions].sort((a, b) => b.count - a.count);
 
   // 2. If there are no votes at all, there's nothing we can do
   if (sortedReactions[0].count === 0) {
-    return undefined;
+    return "none";
   }
 
   // 2. If the top two are tied, there is no consensus

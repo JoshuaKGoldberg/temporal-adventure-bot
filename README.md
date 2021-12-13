@@ -50,7 +50,7 @@ You'll need to create an `.env` file containing exactly one of:
      slash_commands:
        - command: /force
          description: "Force an adventure choice: 'random' or a number for an option."
-         usage_hint: "0"
+         usage_hint: "1"
          url: https://<your-unique-address>.ngrok.io
    ```
 

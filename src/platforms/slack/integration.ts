@@ -68,7 +68,8 @@ export class SlackIntegration implements Integration {
       await this.#slack.client.pins.add({
         channel: process.env.SLACK_CHANNEL,
         timestamp: messageId,
-      })
+      }),
+      "Failed to pin message."
     );
   }
 

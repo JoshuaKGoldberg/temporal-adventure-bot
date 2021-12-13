@@ -18,4 +18,4 @@ export const settings = {
    * Temporal Workflow ID to run execution under.
    */
   workflowId: "my-adventure-bot",
-};
+} as const;

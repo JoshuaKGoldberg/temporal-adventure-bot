@@ -10,17 +10,6 @@ export const createDiscordExpressServer = async (handleText: HandleText) => {
 
   console.log("Receiving Discord events on:", url);
 
-  const app = express().use(express.urlencoded({ extended: true }));
-
-  app.get("/", (_, response) => {
-    response
-      .status(200)
-      .send("Discord added! You may close this window. 💯")
-      .end();
-  });
-
-  app.listen(settings.port);
-
   const client = await getDiscordClient();
 
   client.on("ready", async () => {
@@ -54,4 +43,19 @@ export const createDiscordExpressServer = async (handleText: HandleText) => {
       ephemeral: true,
     });
   });
+
+  const app = express().use(express.urlencoded({ extended: true }));
+
+  app.get("/", (_, response) => {
+    response
+      .status(200)
+      .send("Discord added! You may close this window. 💯")
+      .end();
+  });
+
+  const server = app.listen(settings.port);
+
+  return () => {
+    server.close();
+  };
 };
