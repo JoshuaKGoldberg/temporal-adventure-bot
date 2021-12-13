@@ -1,7 +1,6 @@
 import * as bolt from "@slack/bolt";
 import { WebAPICallResult } from "@slack/web-api";
 
-import { settings } from "../../settings";
 import { emojiNameToIndex, indexToEmojiName } from "../../utils/entries";
 import {
   CreatePollOptions,
@@ -35,7 +34,7 @@ export class SlackIntegration implements Integration {
     for (let i = 0; i < options.choices.length; i += 1) {
       throwIfError(
         await this.#slack.client.reactions.add({
-          channel: settings.slackChannel,
+          channel: process.env.SLACK_CHANNEL,
           timestamp: messageId,
           name: indexToEmojiName[i],
         })
@@ -47,7 +46,7 @@ export class SlackIntegration implements Integration {
 
   async getReactions(messageId: MessageId) {
     const response = await this.#slack.client.reactions.get({
-      channel: settings.slackChannel,
+      channel: process.env.SLACK_CHANNEL,
       timestamp: messageId,
     });
 
@@ -67,7 +66,7 @@ export class SlackIntegration implements Integration {
   async pinMessage(messageId: MessageId) {
     throwIfError(
       await this.#slack.client.pins.add({
-        channel: settings.slackChannel,
+        channel: process.env.SLACK_CHANNEL,
         timestamp: messageId,
       })
     );
@@ -75,7 +74,7 @@ export class SlackIntegration implements Integration {
 
   async postMessage({ notify, text }: PostMessageOptions) {
     const response = await this.#slack.client.chat.postMessage({
-      channel: settings.slackChannel,
+      channel: process.env.SLACK_CHANNEL,
       text: notify ? `<!here> ${text}` : text,
     });
 

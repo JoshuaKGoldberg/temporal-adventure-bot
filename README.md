@@ -4,7 +4,7 @@ A sample [temporal.io](https://temporal.io) application that posts a daily Disco
 
 ## Usage
 
-You can use this bot integrated with Discord, Slack, or (todo) Twitter.
+You can use this bot integrated with Discord, Slack, or _(coming soon!)_ Twitter.
 Regardless of which platform integration you intend on using:
 
 - Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install)).
@@ -18,7 +18,7 @@ You'll need to create an `.env` file containing exactly one of:
 ### Usage: Discord
 
 1. Follow [Discord Bot Tokens](#discord-bot-tokens) below if you haven't yet
-1. Put your `DISCORD_BOT_TOKEN` into `.env`
+1. Put your `DISCORD_BOT_TOKEN` and `DISCORD_CHANNEL` into `.env`
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
 1. On your Discord application's Settings > OAuth2 > General (`https://discord.com/developers/applications/*/oauth2/general`), copy the ngrok URL logged by the workflow into a Redirects URL and save
@@ -40,7 +40,7 @@ You'll need to create an `.env` file containing exactly one of:
 ### Usage: Slack
 
 1. Follow [Slack Bot Tokens](#slack-bot-tokens) below if you haven't yet
-1. Put your `SLACK_BOT_TOKEN` and `SLACK_SIGNING_SECRET` into `.env`
+1. Put your `SLACK_BOT_TOKEN`, `SLACK_CHANNEL`, and `SLACK_SIGNING_SECRET` into `.env`
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
 1. Modify your Slack app manifest to include a slash command under `features`, using the ngrok URL logged by the workflow for `url`:
@@ -68,8 +68,14 @@ You'll need to create an `.env` file containing exactly one of:
 1. Install it on your Slack workspace
 1. Grab its Bot OAuth token from Settings > OAuth & Permissions (`https://api.slack.com/apps/*/oauth`)
 
-## Temporal
+## Architecture
+
+### Temporal
 
 See [temporal.io](https://temporal.io) for general information and [docs.temporal.io](https://docs.temporal.io) for developer documentation.
 
 This project is based off the default [Hello World project](https://docs.temporal.io/docs/typescript/hello-world/) that is scaffolded out when you run `npx @temporalio/create@latest`.
+
+### Overview
+
+TODO: WILL HAVE THIS AS REFERENCE BEFORE REAL WALKTHROUGH RELEASE :)

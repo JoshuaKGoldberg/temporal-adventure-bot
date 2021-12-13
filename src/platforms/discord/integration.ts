@@ -1,6 +1,5 @@
 import * as discord from "discord.js";
 
-import { settings } from "../../settings";
 import {
   emojiNameToIndex,
   emojiNameToSymbol,
@@ -58,7 +57,7 @@ export class DiscordIntegration implements Integration {
 
   static create = async () => {
     const client = await getDiscordClient();
-    const channel = await client.channels.fetch(settings.discordChannel);
+    const channel = await client.channels.fetch(process.env.DISCORD_CHANNEL);
 
     if (!channel?.isText()) {
       throw new Error("Channel is not text.");

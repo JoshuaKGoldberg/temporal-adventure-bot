@@ -1,3 +1,5 @@
+/// <reference types="../typings/env" />
+
 import * as dotenv from "dotenv";
 
 import { DiscordIntegration } from "./discord/integration";

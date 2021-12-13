@@ -52,7 +52,7 @@ export const game: Game = {
   },
   begin: {
     description: [
-      `Good morning, Jack Spriggins! It's a beautiful day in 18th century England. Your family farm, plagued by thievery and misfortune, has fallen on hard times. Your parents told you to sell your beloved old pet cow Bessy for coin to purchase more chickens. The market is opening soon and you should take her there soon.`,
+      `Good morning, Jack Spriggins! It's a beautiful day in 18th century England. Your family farm, plagued by thievery and misfortune, has fallen on hard times. Your parents told you to sell your beloved old pet cow Bessy for coin to purchase more chickens. The market is opening soon and you should take Bessy to be sold.`,
     ],
     options: [
       {

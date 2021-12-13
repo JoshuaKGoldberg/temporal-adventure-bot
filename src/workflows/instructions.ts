@@ -11,6 +11,8 @@ The game is simple:
 4. :checkered_flag: Eventually you'll finish the game -- and if you chose wisely, the ending will be a good one!
 
 ...and that's about it! :sunrise_over_mountains: 
+
+:arrow_right: *Let the game begin!*
 `.trim();
 
 export async function instructions() {

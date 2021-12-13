@@ -13,7 +13,7 @@ export const collectConsensus = (
     return undefined;
   }
 
-  // 2. If the top two are tied (including no votes at all), there is no consensus
+  // 2. If the top two are tied, there is no consensus
   if (sortedReactions[0].count === sortedReactions[1].count) {
     return "tie";
   }
