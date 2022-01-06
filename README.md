@@ -78,4 +78,28 @@ This project is based off the default [Hello World project](https://docs.tempora
 
 ### Overview
 
-TODO: WILL HAVE THIS AS REFERENCE BEFORE REAL WALKTHROUGH RELEASE :)
+#### Worker
+
+The Temporal worker is set up in `src/worker.ts`.
+It uses two common Temporal patterns:
+
+- **Dependency Injection**: using the integration object created by `createIntegration` to provide APIs for the social platform being targeted (`Discord` or `Slack`) (see [Platforms](#platforms))
+- **Logging Sinks**: providing a `logger.sink` method for the workflows to log out to `console.log`
+
+#### Workflows
+
+TODO
+
+#### Platforms
+
+The `platformFactory` function used in both workers and workflows reads from `process.env` to return the `createIntegration` and `createServer` methods for the social platform being targeted.
+
+##### Integrations
+
+`createIntegration`: creates the client API used to send messages to the social platform.
+For example, the Slack integration uses the [Slack Bolt SDK](https://slack.dev/bolt-js).
+
+#### Servers
+
+`createServer` creates the (generally Express) server that runs locally and receives webhook events from the social platform.
+Both the Discord and Slack servers use Ngrok to expose a local port on the public web, so that a `/force` command configured on the platform sends a message, it can signal to the workflow.
