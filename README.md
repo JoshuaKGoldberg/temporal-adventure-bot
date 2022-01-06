@@ -88,7 +88,22 @@ It uses two common Temporal patterns:
 
 #### Workflows
 
-TODO
+The client in `src/client.ts` will ask Temporal to run two different workflows:
+
+1. **`instructions`**: Posts instructions to the social platform and pins the message
+2. **`runGame`**: Continuously runs the game state until the game is finished
+
+##### `runGame`
+
+Each iteration of the game (so, daily), `runGame` goes through these steps:
+
+1. If the entry has no options, the game is over
+2. Post the current entry as a poll
+3. Check and remind people to vote once a day until either...
+   - ...a choice is made by consensus
+   - ...an admin forces a choice
+4. If the choice was forced by an admin, mention that
+5. Continue with that chosen next step in the game
 
 #### Platforms
 
