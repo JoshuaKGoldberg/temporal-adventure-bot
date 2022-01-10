@@ -2,6 +2,14 @@
 
 A sample [temporal.io](https://temporal.io) application that posts a daily Discord or Slack message for interactive choose-your-own-adventure stories. ✨
 
+## YouTube Walkthrough
+
+Watch Josh walkthrough the codebase in this video!
+
+<a href="https://youtu.be/hGIhc6m2keQ">
+   <img height=150 src="https://i9.ytimg.com/vi/hGIhc6m2keQ/mq3.jpg?sqp=CIi-8Y4G&rs=AOn4CLCuw9EjW5qXKG_1Kd_Whkr_QsZsnw" alt="tutorial video">
+</a>
+
 ## Usage
 
 You can use this bot integrated with Discord, Slack, or _(coming soon!)_ Twitter.
