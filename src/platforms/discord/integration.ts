@@ -3,6 +3,7 @@ import * as discord from "discord.js";
 import {
   emojiNameToIndex,
   emojiNameToSymbol,
+  emojiSymbolToName,
   indexToEmojiName,
 } from "../../utils/entries";
 import {
@@ -37,7 +38,7 @@ export class DiscordIntegration implements Integration {
     return reactions.map((reaction) => ({
       // We reduce count by 1 since this bot gives 1 vote to every option
       count: reaction.count - 1,
-      index: emojiNameToIndex[reaction.emoji.name!],
+      index: emojiNameToIndex[emojiSymbolToName[reaction.emoji.name!]],
     }));
   }
 
