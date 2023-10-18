@@ -37,6 +37,7 @@ You'll need to create an `.env` file containing exactly one of:
      - Manage Messages
      - Mention Everyone
    - Guilds
+   - applications.commands
 
 #### Discord Bot Tokens
 

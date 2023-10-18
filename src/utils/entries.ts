@@ -26,7 +26,7 @@ export const emojiNameToSymbol: Record<string, string> = {
 
 export const emojiSymbolToName = Object.fromEntries(
   Object.entries(emojiNameToSymbol).map(
-    ([emoji, index]) => [emoji, index] as const
+    ([emoji, index]) => [index, emoji] as const
   )
 );
 
