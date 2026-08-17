@@ -13,6 +13,14 @@ export const getForcedChoice = async (options: GameOption[]) => {
 
   wf.setHandler(forceSignal, (input) => {
     logger.info("Received force input:", input);
+
+    if (input !== "random" && (input < 1 || input > options.length)) {
+      logger.info("Ignoring force input outside the option count:", {
+        options: options.length,
+      });
+      return;
+    }
+
     forced = input;
   });
 
