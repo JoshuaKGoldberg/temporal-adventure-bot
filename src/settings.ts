@@ -15,6 +15,11 @@ export const settings = {
   taskQueue: "adventure-bot",
 
   /**
+   * Temporal Workflow ID to post channel instructions under.
+   */
+  instructionsWorkflowId: "my-adventure-bot-instructions",
+
+  /**
    * Temporal Workflow ID to run execution under.
    */
   workflowId: "my-adventure-bot",
