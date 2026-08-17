@@ -35,11 +35,13 @@ export class DiscordIntegration implements Integration {
     const message = await this.#channel.messages.fetch(messageId);
     const reactions = Array.from(message.reactions.cache.values());
 
-    return reactions.map((reaction) => ({
-      // We reduce count by 1 since this bot gives 1 vote to every option
-      count: reaction.count - 1,
-      index: emojiNameToIndex[emojiSymbolToName[reaction.emoji.name!]],
-    }));
+    return reactions
+      .filter((reaction) => emojiSymbolToName[reaction.emoji.name!] !== undefined)
+      .map((reaction) => ({
+        // We reduce count by 1 since this bot gives 1 vote to every option
+        count: Math.max(0, reaction.count - 1),
+        index: emojiNameToIndex[emojiSymbolToName[reaction.emoji.name!]],
+      }));
   }
 
   async pinMessage(messageId: MessageId) {
