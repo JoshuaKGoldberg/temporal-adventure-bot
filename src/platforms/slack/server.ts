@@ -1,6 +1,6 @@
+import * as ngrok from "@ngrok/ngrok";
 import crypto from "crypto";
 import express from "express";
-import ngrok from "ngrok";
 
 import { settings } from "../../settings";
 import { HandleText } from "../types";
@@ -41,10 +41,6 @@ const isFromSlack = (request: SignedRequest) => {
 };
 
 export const createSlackExpressServer = async (handleText: HandleText) => {
-  const url = await ngrok.connect(settings.port);
-
-  console.log("Receiving Slack events on:", url);
-
   const app = express().use(
     express.urlencoded({
       extended: true,
@@ -76,7 +72,16 @@ export const createSlackExpressServer = async (handleText: HandleText) => {
 
   const server = app.listen(settings.port);
 
+  const listener = await ngrok.forward({
+    addr: settings.port,
+    authtoken_from_env: true,
+    ...(process.env.NGROK_DOMAIN && { domain: process.env.NGROK_DOMAIN }),
+  });
+
+  console.log("Receiving Slack events on:", listener.url());
+
   return () => {
+    void listener.close();
     server.close();
   };
 };
