@@ -2,7 +2,7 @@ export const settings = {
   /**
    * How frequently to post and check for choice consensus.
    */
-  interval: "1 day",
+  interval: "10 minutes",
 
   /**
    * Ngrok server port to listen for server messages on.
