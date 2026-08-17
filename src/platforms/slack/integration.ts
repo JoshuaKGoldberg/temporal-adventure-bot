@@ -56,11 +56,13 @@ export class SlackIntegration implements Integration {
       throw new Error(response.error ?? "Could not retrieve reactions.");
     }
 
-    return reactions.map((reaction) => ({
-      // We reduce count by 1 since this bot gives 1 vote to every option
-      count: reaction.count! - 1,
-      index: emojiNameToIndex[reaction.name!],
-    }));
+    return reactions
+      .filter((reaction) => reaction.name! in emojiNameToIndex)
+      .map((reaction) => ({
+        // We reduce count by 1 since this bot gives 1 vote to every option
+        count: Math.max(0, reaction.count! - 1),
+        index: emojiNameToIndex[reaction.name!],
+      }));
   }
 
   async pinMessage(messageId: MessageId) {
