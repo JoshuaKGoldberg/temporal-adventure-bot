@@ -21,7 +21,7 @@ export const getForcedChoice = async (options: GameOption[]) => {
   const entry =
     forced === "random"
       ? options[Math.floor(Math.random() * options.length)]
-      : options[forced!];
+      : options[forced! - 1];
 
   return {
     choice: entry.next,
@@ -36,7 +36,7 @@ const parseCommandText = (text: string) => {
 
   const next = parseInt(text);
 
-  return isNaN(next) ? undefined : next + 1; // Use 1-based instead of 0-based to be user-friendly
+  return isNaN(next) ? undefined : next;
 };
 
 export const printForced = (forced: ForceInput) => {
