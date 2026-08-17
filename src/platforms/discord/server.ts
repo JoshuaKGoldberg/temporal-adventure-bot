@@ -1,15 +1,11 @@
+import * as ngrok from "@ngrok/ngrok";
 import express from "express";
-import ngrok from "ngrok";
 
 import { settings } from "../../settings";
 import { HandleText } from "../types";
 import { getDiscordClient } from "./client";
 
 export const createDiscordExpressServer = async (handleText: HandleText) => {
-  const url = await ngrok.connect(settings.port);
-
-  console.log("Receiving Discord events on:", url);
-
   const client = await getDiscordClient();
 
   client.on("ready", async () => {
@@ -55,7 +51,16 @@ export const createDiscordExpressServer = async (handleText: HandleText) => {
 
   const server = app.listen(settings.port);
 
+  const listener = await ngrok.forward({
+    addr: settings.port,
+    authtoken_from_env: true,
+    ...(process.env.NGROK_DOMAIN && { domain: process.env.NGROK_DOMAIN }),
+  });
+
+  console.log("Receiving Discord events on:", listener.url());
+
   return () => {
+    void listener.close();
     server.close();
   };
 };

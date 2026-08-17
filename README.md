@@ -17,6 +17,8 @@ Regardless of which platform integration you intend on using:
 
 - Make sure Temporal Server is running locally (see the [quick install guide](https://docs.temporal.io/docs/server/quick-install)).
 - `npm install` to install dependencies.
+- Sign up for a free [ngrok account](https://dashboard.ngrok.com/signup) and put your [authtoken](https://dashboard.ngrok.com/get-started/your-authtoken) in `.env` as `NGROK_AUTHTOKEN`. ngrok has no anonymous tunnels, so this is required.
+- Optionally, set `NGROK_DOMAIN` to the static domain on your ngrok dashboard. Without it the public URL changes on every restart, and you'll have to update it on the platform each time.
 
 You'll need to create an `.env` file containing exactly one of:
 
