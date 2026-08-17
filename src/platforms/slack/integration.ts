@@ -90,5 +90,19 @@ export class SlackIntegration implements Integration {
     return messageId;
   }
 
-  static create = async () => Promise.resolve(new SlackIntegration());
+  static create = async () => {
+    const integration = new SlackIntegration();
+
+    // Bolt validates the token in a background promise whose rejection would
+    // otherwise crash the process with no indication of which token is bad
+    try {
+      await integration.#slack.client.auth.test();
+    } catch (error) {
+      throw new Error(
+        `Slack rejected SLACK_BOT_TOKEN: ${(error as Error).message}`
+      );
+    }
+
+    return integration;
+  };
 }
