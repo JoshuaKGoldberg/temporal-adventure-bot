@@ -52,6 +52,8 @@ You'll need to create an `.env` file containing exactly one of:
 
 1. Follow [Slack Bot Tokens](#slack-bot-tokens) below if you haven't yet
 1. Put your `SLACK_BOT_TOKEN`, `SLACK_CHANNEL`, and `SLACK_SIGNING_SECRET` into `.env`
+   - `SLACK_CHANNEL` must be the channel _ID_ (such as `C0123456789`), not its name
+1. Invite the bot to that channel with `/invite @Your Bot Name`. `chat:write.public` covers posting, but adding reactions, reading them, and pinning all require the bot to be a member.
 1. `npm run start.watch` to start the Worker.
 1. In another shell, `npm run workflow` to run the Workflow.
 1. Modify your Slack app manifest to include a slash command under `features`, using the ngrok URL logged by the workflow for `url`:
