@@ -16,7 +16,10 @@ async function run() {
   const client = new WorkflowClient(connection.service);
 
   // 2. Log and pin channel-wide instructions just once
-  await client.execute(instructions, executionOptions);
+  await client.execute(instructions, {
+    ...executionOptions,
+    workflowId: settings.instructionsWorkflowId,
+  });
 
   // 3. Start the workflow that checks once a day for choice consensus
   const runningGame = client.execute(runGame, {
