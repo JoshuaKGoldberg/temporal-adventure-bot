@@ -92,5 +92,17 @@ export class SlackIntegration implements Integration {
     return messageId;
   }
 
-  static create = async () => Promise.resolve(new SlackIntegration());
+  static create = async () => {
+    const integration = new SlackIntegration();
+
+    try {
+      await integration.#slack.client.auth.test();
+    } catch (error) {
+      throw new Error(
+        `Slack rejected SLACK_BOT_TOKEN: ${(error as Error).message}`
+      );
+    }
+
+    return integration;
+  };
 }
