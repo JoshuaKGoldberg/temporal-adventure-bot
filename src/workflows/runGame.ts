@@ -52,14 +52,12 @@ ${game[entry].description.join("\n")}
       switch (consensus) {
         case "none":
           await activities.postMessage({
-            notify: true,
             text: `Well, nobody posted, so... waiting another ${settings.interval}!`,
           });
           return undefined;
 
         case "tie":
           await activities.postMessage({
-            notify: true,
             text: `Looks like there's a tie! Waiting another ${settings.interval} for you make up your minds.`,
           });
           return undefined;
